@@ -15,10 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Strings for component 'repository_s3bucket', language 'en', branch 'MOODLE_35_STABLE'
+ * Strings for component 'repository_s3bucketplus', language 'en', branch 'MOODLE_39_STABLE'
  *
- * @package   repository_s3bucket
- * @copyright 2015 Renaat Debleu (www.eWallah.net) (based on work by Dongsheng Cai)
+ * @package   repository_s3bucketplus
+ * @copyright 2020 Jordan Tomkinson (based on work by Renaat Debleu and Dongsheng Cai)
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -32,7 +32,7 @@ $string['cloudfront_help'] = 'The complete AWS CloudFront url where this bucket 
 $string['configplugin'] = 'AWS S3 bucket settings';
 $string['cookies'] = 'AWS CloudFront cookies';
 $string['cookies_help'] = 'The AWS CloudFront cookies or signed url.';
-$string['pluginname'] = 'Amazon S3 bucket';
+$string['pluginname'] = 'Amazon S3 bucket plus';
 $string['pluginname_help'] = 'AWS S3 bucket repository';
 $string['privacy:metadata'] = 'The AWS S3 repository does not store any personal data.';
 $string['privacy:metadata'] = 'The AWS S3 bucket repository plugin does not store any personal data, but can transmit files from Moodle to AWS.';

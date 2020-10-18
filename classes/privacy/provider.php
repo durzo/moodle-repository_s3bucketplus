@@ -17,19 +17,19 @@
 /**
  * Privacy Subsystem implementation for repository_s3.
  *
- * @package    repository_s3bucket
+ * @package    repository_s3bucketplus
  * @copyright  2015 Renaat Debleu (www.eWallah.net) (based on work by Dongsheng Cai)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace repository_s3bucket\privacy;
+namespace repository_s3bucketplus\privacy;
 
 defined('MOODLE_INTERNAL') || die();
 
 /**
  * Privacy Subsystem for repository_s3 implementing null_provider.
  *
- * @package    repository_s3bucket
+ * @package    repository_s3bucketplus
  * @copyright  2015 Renaat Debleu (www.eWallah.net) (based on work by Dongsheng Cai)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

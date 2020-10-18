@@ -17,7 +17,7 @@
 /**
  * Plugin capabilities.
  *
- * @package    repository_s3bucket
+ * @package    repository_s3bucketplus
  * @copyright  2015 Renaat Debleu (www.eWallah.net) (based on work by Dongsheng Cai)
  * @author     Renaat Debleu (www.eWallah.net)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -26,9 +26,9 @@
 defined('MOODLE_INTERNAL') || die();
 
 $capabilities = [
-    'repository/s3bucket:view' => ['captype' => 'write', 'contextlevel' => CONTEXT_MODULE,
+    'repository/s3bucketplus:view' => ['captype' => 'write', 'contextlevel' => CONTEXT_MODULE,
         'archetypes' => ['editingteacher' => CAP_ALLOW, 'manager' => CAP_ALLOW]],
-    'repository/s3bucket:addinstance' => ['captype' => 'write', 'contextlevel' => CONTEXT_SYSTEM,
+    'repository/s3bucketplus:addinstance' => ['captype' => 'write', 'contextlevel' => CONTEXT_SYSTEM,
         'archetypes' => ['manager' => CAP_ALLOW]],
-    'repository/s3bucket:addinstance' => ['captype' => 'write', 'contextlevel' => CONTEXT_COURSE,
+    'repository/s3bucketplus:addinstance' => ['captype' => 'write', 'contextlevel' => CONTEXT_COURSE,
         'archetypes' => ['editingteacher' => CAP_ALLOW, 'manager' => CAP_ALLOW]]];

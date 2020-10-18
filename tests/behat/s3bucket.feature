@@ -1,4 +1,4 @@
-@repository @repository_s3bucket
+@repository @repository_s3bucketplus
 Feature: S3 bucket repository should throw no errors
   An admin should be able to configure the plugin
 

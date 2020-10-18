@@ -17,7 +17,7 @@
 /**
  * Amazon S3bucket repository data generator test
  *
- * @package    repository_s3bucket
+ * @package    repository_s3bucketplus
  * @copyright  2017 Renaat Debleu (www.eWallah.net) (based on work by Dongsheng Cai)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -27,12 +27,12 @@ defined('MOODLE_INTERNAL') || die();
 /**
  * Amazon S3bucket repository data generator test
  *
- * @package    repository_s3bucket
+ * @package    repository_s3bucketplus
  * @copyright  2017 Renaat Debleu (www.eWallah.net) (based on work by Dongsheng Cai)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @coversDefaultClass repository_s3bucket_generator
+ * @coversDefaultClass repository_s3bucketplus_generator
  */
-class repository_s3bucket_generator_testcase extends advanced_testcase {
+class repository_s3bucketplus_generator_testcase extends advanced_testcase {
 
     /**
      * Basic test of creation of repository types.

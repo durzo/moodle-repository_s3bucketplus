@@ -17,7 +17,7 @@
 /**
  * Mock tests.
  *
- * @package    repository_s3bucket
+ * @package    repository_s3bucketplus
  * @copyright  2017 Renaat Debleu (www.eWallah.net) (based on work by Dongsheng Cai)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -34,12 +34,12 @@ use Aws\S3\S3Client;
 /**
  * Mock tests.
  *
- * @package    repository_s3bucket
+ * @package    repository_s3bucketplus
  * @copyright  2017 Renaat Debleu (www.eWallah.net) (based on work by Dongsheng Cai)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @coversDefaultClass \repository_s3bucket
+ * @coversDefaultClass \repository_s3bucketplus
  */
-class repository_s3bucket_mock_tests extends \advanced_testcase {
+class repository_s3bucketplus_mock_tests extends \advanced_testcase {
 
     /**
      * Test listobjects s3.
@@ -98,7 +98,7 @@ class repository_s3bucket_mock_tests extends \advanced_testcase {
         $this->getDataGenerator()->create_repository_type($type);
         $repo = $this->getDataGenerator()->create_repository($type)->id;
         $this->SetAdminUser();
-        $s3bucket = new repository_s3bucket($repo);
+        $s3bucket = new repository_s3bucketplus($repo);
         $reflection = new ReflectionClass($s3bucket);
         $method = $reflection->getMethod('create_s3');
         $method->setAccessible(true);

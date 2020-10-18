@@ -17,7 +17,7 @@
 /**
  * This plugin is used to access s3bucket files
  *
- * @package    repository_s3bucket
+ * @package    repository_s3bucketplus
  * @copyright  2017 Renaat Debleu (www.eWallah.net) (based on work by Dongsheng Cai)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -30,11 +30,11 @@ require_once($CFG->dirroot . '/local/aws/sdk/aws-autoloader.php');
 /**
  * This is a repository class used to browse a Amazon S3 bucket.
  *
- * @package    repository_s3bucket
+ * @package    repository_s3bucketplus
  * @copyright  2017 Renaat Debleu (www.eWallah.net) (based on work by Dongsheng Cai)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class repository_s3bucket extends repository {
+class repository_s3bucketplus extends repository {
 
     /** @var _s3client s3 client object */
     private $_s3client;
@@ -145,7 +145,7 @@ class repository_s3bucket extends repository {
      */
     public function get_link($url) {
         $cid = context_system::instance()->id;
-        return moodle_url::make_pluginfile_url($cid, 'repository_s3bucket', 's3', $this->id, '/', $url)->out();
+        return moodle_url::make_pluginfile_url($cid, 'repository_s3bucketplus', 's3', $this->id, '/', $url)->out();
     }
 
     /**
@@ -230,9 +230,9 @@ class repository_s3bucket extends repository {
         $mform->setType('access_key', PARAM_RAW_TRIMMED);
         $mform->addElement('passwordunmask', 'secret_key', get_string('secret_key', 'repository_s3'), $textops);
         $mform->setType('secret_key', PARAM_RAW_TRIMMED);
-        $mform->addElement('text', 'bucket_name', get_string('bucketname', 'repository_s3bucket'), $textops);
+        $mform->addElement('text', 'bucket_name', get_string('bucketname', 'repository_s3bucketplus'), $textops);
         $mform->setType('bucket_name', PARAM_RAW_TRIMMED);
-        $mform->addElement('text', 'base_path', get_string('basepath', 'repository_s3bucket'), $textops);
+        $mform->addElement('text', 'base_path', get_string('basepath', 'repository_s3bucketplus'), $textops);
         $mform->setType('base_path', PARAM_RAW_TRIMMED);
         $mform->addElement('select', 'endpoint', get_string('endpoint', 'repository_s3'), $endpointselect);
         $mform->setDefault('endpoint', 's3.amazonaws.com');
@@ -321,7 +321,7 @@ class repository_s3bucket extends repository {
 
 
 /**
- * Serve the files from the repository_s3bucket file areas
+ * Serve the files from the repository_s3bucketplus file areas
  *
  * @param stdClass $course the course object
  * @param stdClass $cm the course module object
@@ -332,7 +332,7 @@ class repository_s3bucket extends repository {
  * @param array $options additional options affecting the file serving
  * @return bool false if the file not found, just send the file otherwise and do not return
  */
-function repository_s3bucket_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options = []) {
+function repository_s3bucketplus_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options = []) {
     if ($filearea !== 's3') {
         return false;
     }

@@ -17,26 +17,26 @@
 /**
  * Delete tests.
  *
- * @package    repository_s3bucket
+ * @package    repository_s3bucketplus
  * @copyright  2017 Renaat Debleu (www.eWallah.net) (based on work by Dongsheng Cai)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace repository_s3bucket;
+namespace repository_s3bucketplus;
 
 defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
 require_once($CFG->dirroot . '/repository/lib.php');
-require_once($CFG->dirroot . '/repository/s3bucket/lib.php');
+require_once($CFG->dirroot . '/repository/s3bucketplus/lib.php');
 
 /**
  * Delete tests.
  *
- * @package    repository_s3bucket
+ * @package    repository_s3bucketplus
  * @copyright  2017 Renaat Debleu (www.eWallah.net) (based on work by Dongsheng Cai)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @coversDefaultClass \repository_s3bucket
+ * @coversDefaultClass \repository_s3bucketplus
  */
 class delete_tests extends \advanced_testcase {
 
@@ -52,7 +52,7 @@ class delete_tests extends \advanced_testcase {
         $this->getDataGenerator()->create_repository_type($type);
         $repoid = $this->getDataGenerator()->create_repository($type)->id;
         $this->SetAdminUser();
-        $repo = new \repository_s3bucket($repoid);
+        $repo = new \repository_s3bucketplus($repoid);
         $this->assertEquals($cnt + 1, $DB->count_records('repository_instances'));
         $fs = get_file_storage();
         $filerecord = ['component' => 'user', 'filearea' => 'draft', 'contextid' => \context_user::instance($USER->id)->id,

@@ -17,21 +17,21 @@
 /**
  * Amazon S3bucket behat step test
  *
- * @package    repository_s3bucket
+ * @package    repository_s3bucketplus
  * @copyright  2017 Renaat Debleu (www.eWallah.net) (based on work by Dongsheng Cai)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-namespace repository_s3bucket;
+namespace repository_s3bucketplus;
 
 defined('MOODLE_INTERNAL') || die();
 
 /**
  * Amazon S3bucket behat step tests
  *
- * @package    repository_s3bucket
+ * @package    repository_s3bucketplus
  * @copyright  2017 Renaat Debleu (www.eWallah.net) (based on work by Dongsheng Cai)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @coversDefaultClass behat_repository_s3bucket
+ * @coversDefaultClass behat_repository_s3bucketplus
  */
 class behat_step_testcase extends \advanced_testcase {
 
@@ -43,10 +43,10 @@ class behat_step_testcase extends \advanced_testcase {
     public function test_do_step() {
         global $CFG, $DB;
         $this->resetAfterTest(true);
-        require_once($CFG->dirroot . '/repository/s3bucket/tests/behat/behat_repository_s3bucket.php');
+        require_once($CFG->dirroot . '/repository/s3bucketplus/tests/behat/behat_repository_s3bucketplus.php');
         $type = 's3bucket';
         $this->assertFalse($DB->record_exists('repository', ['type' => $type]));
-        $beha = new \behat_repository_s3bucket();
+        $beha = new \behat_repository_s3bucketplus();
         $beha->i_enable_repository($type);
         $this->assertTrue($DB->record_exists('repository', ['type' => $type]));
     }

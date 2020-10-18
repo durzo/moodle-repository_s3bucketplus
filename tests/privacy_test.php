@@ -17,7 +17,7 @@
 /**
  * Privacy test.
  *
- * @package    repository_s3bucket
+ * @package    repository_s3bucketplus
  * @copyright  2017 Renaat Debleu (www.eWallah.net) (based on work by Dongsheng Cai)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -25,23 +25,23 @@
 defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
-require_once($CFG->dirroot . '/repository/s3bucket/lib.php');
+require_once($CFG->dirroot . '/repository/s3bucketplus/lib.php');
 
 /**
  * Privacy tests.
  *
- * @package    repository_s3bucket
+ * @package    repository_s3bucketplus
  * @copyright  2017 Renaat Debleu (www.eWallah.net) (based on work by Dongsheng Cai)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @coversDefaultClass repository_s3bucket\privacy\provider
+ * @coversDefaultClass repository_s3bucketplus\privacy\provider
  */
-class repository_s3bucket_privacy_tests extends \core_privacy\tests\provider_testcase {
+class repository_s3bucketplus_privacy_tests extends \core_privacy\tests\provider_testcase {
 
     /**
      * Test privacy.
      */
     public function test_privacy() {
-        $privacy = new repository_s3bucket\privacy\provider();
+        $privacy = new repository_s3bucketplus\privacy\provider();
         $this->assertEquals('privacy:metadata', $privacy->get_reason());
     }
 }

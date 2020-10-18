@@ -29,7 +29,7 @@
 
 
         <testsuites>
-            <testsuite name="repository_s3bucket_testsuite">
+            <testsuite name="repository_s3bucketplus_testsuite">
                 <directory suffix="_test.php">.</directory>
             </testsuite>
         </testsuites>

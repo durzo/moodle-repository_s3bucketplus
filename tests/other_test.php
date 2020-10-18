@@ -17,7 +17,7 @@
 /**
  * Other tests.
  *
- * @package    repository_s3bucket
+ * @package    repository_s3bucketplus
  * @copyright  2017 Renaat Debleu (www.eWallah.net) (based on work by Dongsheng Cai)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -27,17 +27,17 @@ defined('MOODLE_INTERNAL') || die();
 global $CFG;
 require_once($CFG->libdir. '/formslib.php');
 require_once($CFG->dirroot . '/repository/lib.php');
-require_once($CFG->dirroot . '/repository/s3bucket/lib.php');
+require_once($CFG->dirroot . '/repository/s3bucketplus/lib.php');
 
 /**
  * Other tests.
  *
- * @package    repository_s3bucket
+ * @package    repository_s3bucketplus
  * @copyright  2017 Renaat Debleu (www.eWallah.net) (based on work by Dongsheng Cai)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @coversDefaultClass \repository_s3bucket
+ * @coversDefaultClass \repository_s3bucketplus
  */
-class repository_s3bucket_other_tests extends \advanced_testcase {
+class repository_s3bucketplus_other_tests extends \advanced_testcase {
 
     /** @var int repo */
     protected $repo;
@@ -58,7 +58,7 @@ class repository_s3bucket_other_tests extends \advanced_testcase {
      */
     public function test_sendfiles3() {
         global $USER;
-        $repo = new \repository_s3bucket($this->repo);
+        $repo = new \repository_s3bucketplus($this->repo);
         $fs = get_file_storage();
         $filerecord = ['component' => 'user', 'filearea' => 'draft', 'contextid' => context_user::instance($USER->id)->id,
                        'itemid' => file_get_unused_draft_itemid(), 'filename' => 'filename.jpg', 'filepath' => '/'];
@@ -71,7 +71,7 @@ class repository_s3bucket_other_tests extends \advanced_testcase {
      * Test class in system context.
      */
     public function test_class() {
-        $repo = new \repository_s3bucket($this->repo);
+        $repo = new \repository_s3bucketplus($this->repo);
         $this->assertEquals('s3bucket 1', $repo->get_name());
         $this->assertTrue($repo->check_login());
         $this->assertTrue($repo->contains_private_data());
@@ -104,7 +104,7 @@ class repository_s3bucket_other_tests extends \advanced_testcase {
         $context = context_course::instance($course->id);
         $data = ['endpoint' => 's3.eu-central-1.amazonaws.com', 'secret_key' => 'secret', 'bucket_name' => 'test',
                  'access_key' => 'abc'];
-        $repo = new \repository_s3bucket($this->repo, $context, $data);
+        $repo = new \repository_s3bucketplus($this->repo, $context, $data);
         $this->expectException('Aws\S3\Exception\S3Exception');
         $repo->get_listing();
     }
@@ -115,7 +115,7 @@ class repository_s3bucket_other_tests extends \advanced_testcase {
     public function test_noaccess_key() {
         $course = $this->getDataGenerator()->create_course();
         $context = context_course::instance($course->id);
-        $repo = new \repository_s3bucket($this->repo, $context);
+        $repo = new \repository_s3bucketplus($this->repo, $context);
         $repo->set_option(['access_key' => null]);
         $this->expectException('moodle_exception');
         $repo->get_listing();
@@ -127,7 +127,7 @@ class repository_s3bucket_other_tests extends \advanced_testcase {
     public function test_getfile() {
         global $USER;
         $context = context_user::instance($USER->id);
-        $repo = new \repository_s3bucket($USER->id, $context);
+        $repo = new \repository_s3bucketplus($USER->id, $context);
         $repo->set_option(['endpoint' => 'ap-south-1', 'secret_key' => 'secret', 'bucket_name' => 'test',
                            'access_key' => 'abc']);
         $draft = file_get_unused_draft_itemid();
@@ -144,7 +144,7 @@ class repository_s3bucket_other_tests extends \advanced_testcase {
     public function test_getlink() {
         global $USER;
         $context = context_user::instance($USER->id);
-        $repo = new \repository_s3bucket($USER->id, $context);
+        $repo = new \repository_s3bucketplus($USER->id, $context);
         $url = $repo->get_link('tst.jpg');
         $this->assertContains('/s3/', $url);
     }
@@ -156,11 +156,11 @@ class repository_s3bucket_other_tests extends \advanced_testcase {
         $course = $this->getDataGenerator()->create_course();
         $url = $this->getDataGenerator()->create_module('url', ['course' => $course->id]);
         $context = context_module::instance($url->cmid);
-        $repo = new \repository_s3bucket($this->repo, $context);
+        $repo = new \repository_s3bucketplus($this->repo, $context);
         $cm = get_coursemodule_from_instance('url', $url->id);
-        $this->assertFalse(repository_s3bucket_pluginfile($course, $cm, $context, 'h3', [$repo->id, 'tst.jpg'], true));
+        $this->assertFalse(repository_s3bucketplus_pluginfile($course, $cm, $context, 'h3', [$repo->id, 'tst.jpg'], true));
         try {
-            repository_s3bucket_pluginfile($course, $cm, $context, 's3', [$repo->id, 'tst.jpg'], true);
+            repository_s3bucketplus_pluginfile($course, $cm, $context, 's3', [$repo->id, 'tst.jpg'], true);
         } catch (Exception $e) {
             $this->assertContains('Cannot modify header information - headers already sent', $e->getMessage());
         }
@@ -176,7 +176,7 @@ class repository_s3bucket_other_tests extends \advanced_testcase {
         $mform = new repository_instance_form('', $para);
         $data = ['endpoint' => 's3.amazonaws.com', 'secret_key' => 'secret', 'bucket_name' => 'test',
                  'access_key' => 'abc'];
-        $this->assertEquals([], repository_s3bucket::instance_form_validation($mform, $data, []));
+        $this->assertEquals([], repository_s3bucketplus::instance_form_validation($mform, $data, []));
         ob_start();
         $mform->display();
         $out = ob_get_clean();
@@ -197,7 +197,7 @@ class repository_s3bucket_other_tests extends \advanced_testcase {
         $mform = new repository_instance_form('', $para);
         $data = ['endpoint' => 's3.amazonaws.com', 'secret_key' => 'secret', 'bucket_name' => 'test',
                  'access_key' => 'abc'];
-        $this->assertEquals([], repository_s3bucket::instance_form_validation($mform, $data, []));
+        $this->assertEquals([], repository_s3bucketplus::instance_form_validation($mform, $data, []));
         ob_start();
         $mform->display();
         $out = ob_get_clean();
@@ -216,7 +216,7 @@ class repository_s3bucket_other_tests extends \advanced_testcase {
         $page->set_context($context);
         $page->set_pagelayout('standard');
         $page->set_pagetype('course-view');
-        $page->set_url('/repository/s3bucket/manage.php');
+        $page->set_url('/repository/s3bucketplus/manage.php');
         $para = ['plugin' => 's3bucket', 'typeid' => '', 'instance' => null, 'contextid' => $context->id];
         $mform = new repository_instance_form('', $para);
         ob_start();
@@ -225,13 +225,13 @@ class repository_s3bucket_other_tests extends \advanced_testcase {
         $out = ob_get_clean();
         $this->assertEquals('', $fromform);
         $this->assertContains('There are required fields', $out);
-        $this->assertEquals([], repository_s3bucket::instance_form_validation($mform, $data, []));
+        $this->assertEquals([], repository_s3bucketplus::instance_form_validation($mform, $data, []));
         ob_start();
         $mform->display();
         $fromform = $mform->get_data();
         $out = ob_get_clean();
         $this->assertEquals('', $fromform);
         $this->assertContains('value="s3.amazonaws.com" selected', $out);
-        $this->assertEquals([], repository_s3bucket::instance_form_validation($mform, $data, []));
+        $this->assertEquals([], repository_s3bucketplus::instance_form_validation($mform, $data, []));
     }
 }
