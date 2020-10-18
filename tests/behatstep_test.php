@@ -44,7 +44,7 @@ class behat_step_testcase extends \advanced_testcase {
         global $CFG, $DB;
         $this->resetAfterTest(true);
         require_once($CFG->dirroot . '/repository/s3bucketplus/tests/behat/behat_repository_s3bucketplus.php');
-        $type = 's3bucket';
+        $type = 's3bucketplus';
         $this->assertFalse($DB->record_exists('repository', ['type' => $type]));
         $beha = new \behat_repository_s3bucketplus();
         $beha->i_enable_repository($type);

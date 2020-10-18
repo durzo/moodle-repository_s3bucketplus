@@ -47,7 +47,7 @@ class repository_s3bucketplus_other_tests extends \advanced_testcase {
      */
     public function setUp() {
         $this->resetAfterTest(true);
-        $type = 's3bucket';
+        $type = 's3bucketplus';
         $this->getDataGenerator()->create_repository_type($type);
         $this->repo = $this->getDataGenerator()->create_repository($type)->id;
         $this->SetAdminUser();
@@ -72,10 +72,10 @@ class repository_s3bucketplus_other_tests extends \advanced_testcase {
      */
     public function test_class() {
         $repo = new \repository_s3bucketplus($this->repo);
-        $this->assertEquals('s3bucket 1', $repo->get_name());
+        $this->assertEquals('s3bucketplus 1', $repo->get_name());
         $this->assertTrue($repo->check_login());
         $this->assertTrue($repo->contains_private_data());
-        $this->assertCount(4, $repo->get_instance_option_names());
+        $this->assertCount(5, $repo->get_instance_option_names());
         $this->assertEquals('Unknown source', $repo->get_reference_details(''));
         $this->assertEquals('s3://testrepo/filename.txt', $repo->get_file_source_info('filename.txt'));
         $this->assertEquals('s3://testrepo/filename.txt', $repo->get_reference_details('filename.txt'));
@@ -117,7 +117,7 @@ class repository_s3bucketplus_other_tests extends \advanced_testcase {
         $context = context_course::instance($course->id);
         $repo = new \repository_s3bucketplus($this->repo, $context);
         $repo->set_option(['access_key' => null]);
-        $this->expectException('moodle_exception');
+        $this->expectException('Aws\Exception\CredentialsException');
         $repo->get_listing();
     }
 
@@ -172,7 +172,7 @@ class repository_s3bucketplus_other_tests extends \advanced_testcase {
     public function test_instance_form() {
         global $USER;
         $context = context_user::instance($USER->id);
-        $para = ['plugin' => 's3bucket', 'typeid' => '', 'instance' => null, 'contextid' => $context->id];
+        $para = ['plugin' => 's3bucketplus', 'typeid' => '', 'instance' => null, 'contextid' => $context->id];
         $mform = new repository_instance_form('', $para);
         $data = ['endpoint' => 's3.amazonaws.com', 'secret_key' => 'secret', 'bucket_name' => 'test',
                  'access_key' => 'abc'];
@@ -193,7 +193,7 @@ class repository_s3bucketplus_other_tests extends \advanced_testcase {
         set_config('proxyuser', 'user');
         set_config('proxypassword', 'pass');
         $context = context_user::instance($USER->id);
-        $para = ['plugin' => 's3bucket', 'typeid' => '', 'instance' => null, 'contextid' => $context->id];
+        $para = ['plugin' => 's3bucketplus', 'typeid' => '', 'instance' => null, 'contextid' => $context->id];
         $mform = new repository_instance_form('', $para);
         $data = ['endpoint' => 's3.amazonaws.com', 'secret_key' => 'secret', 'bucket_name' => 'test',
                  'access_key' => 'abc'];
@@ -217,7 +217,7 @@ class repository_s3bucketplus_other_tests extends \advanced_testcase {
         $page->set_pagelayout('standard');
         $page->set_pagetype('course-view');
         $page->set_url('/repository/s3bucketplus/manage.php');
-        $para = ['plugin' => 's3bucket', 'typeid' => '', 'instance' => null, 'contextid' => $context->id];
+        $para = ['plugin' => 's3bucketplus', 'typeid' => '', 'instance' => null, 'contextid' => $context->id];
         $mform = new repository_instance_form('', $para);
         ob_start();
         $mform->display();

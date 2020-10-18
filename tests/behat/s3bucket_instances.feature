@@ -13,15 +13,13 @@ Feature: S3 bucket repository should be seen by admins
       | user | course | role |
       | student | C1 | student |
       | teacher | C1 | editingteacher |
-    And I enable repository "s3bucket"
+    And I enable repository "s3bucketplus"
     And I log in as "admin"
-    And I navigate to "Plugins > Repositories > Amazon S3 bucket" in site administration
+    And I navigate to "Plugins > Repositories > Amazon S3 bucket plus" in site administration
     And I click on "Create a repository instance" "button"
     And I set the following fields to these values:
         | name        | Testrepo      |
         | bucket_name | Testbucket    |
-    And I click on "Save" "button"
-    Then I should see "Required"
     And I set the field "Access key" to "anoTherfake@1"
     And I set the field "Secret key" to "anotherFake_$2"
     And I click on "Save" "button"

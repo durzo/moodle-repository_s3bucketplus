@@ -42,7 +42,7 @@ class repository_s3bucketplus_generator_testcase extends advanced_testcase {
     public function test_create_type() {
         global $DB;
         $this->resetAfterTest(true);
-        $type = 's3bucket';
+        $type = 's3bucketplus';
         $repotype = $this->getDataGenerator()->create_repository_type($type);
         $this->assertEquals($repotype->type, $type, 'Unexpected name after creating repository type ' . $type);
         $this->assertTrue($DB->record_exists('repository', ['type' => $type, 'visible' => 1]));
@@ -65,7 +65,7 @@ class repository_s3bucketplus_generator_testcase extends advanced_testcase {
      */
     public function test_create_instance() {
         $this->resetAfterTest(true);
-        $type = 's3bucket';
+        $type = 's3bucketplus';
         $this->getDataGenerator()->create_repository_type($type);
         $repo = $this->getDataGenerator()->create_repository($type);
         $this->assertEquals($repo->userid, 0);
@@ -78,7 +78,7 @@ class repository_s3bucketplus_generator_testcase extends advanced_testcase {
      */
     public function test_install_repository() {
         $this->resetAfterTest(true);
-        $plugintype = new repository_type('s3bucket');
+        $plugintype = new repository_type('s3bucketplus');
         $pluginid = $plugintype->create(false);
         $this->assertInternalType('int', $pluginid);
     }

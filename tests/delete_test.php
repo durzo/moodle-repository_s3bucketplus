@@ -46,7 +46,7 @@ class delete_tests extends \advanced_testcase {
     public function test_deletebucket() {
         global $DB, $USER;
         $this->resetAfterTest(true);
-        $type = 's3bucket';
+        $type = 's3bucketplus';
         $reference = 'filename.jpg';
         $cnt = $DB->count_records('repository_instances');
         $this->getDataGenerator()->create_repository_type($type);

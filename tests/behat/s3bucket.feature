@@ -14,15 +14,13 @@ Feature: S3 bucket repository should throw no errors
       | user | course | role |
       | student | C1 | student |
       | teacher | C1 | editingteacher |
-    And I enable repository "s3bucket"
+    And I enable repository "s3bucketplus"
     And I log in as "admin"
-    And I navigate to "Plugins > Repositories > Amazon S3 bucket" in site administration
+    And I navigate to "Plugins > Repositories > Amazon S3 bucket plus" in site administration
     And I click on "Create a repository instance" "button"
     And I set the following fields to these values:
         | name        | Testrepo      |
         | bucket_name | Testbucket    |
-    And I click on "Save" "button"
-    Then I should see "Required"
     And I set the field "Access key" to "anoTherfake@1"
     And I set the field "Secret key" to "anotherFake_$2"
     And I click on "Save" "button"
@@ -35,16 +33,16 @@ Feature: S3 bucket repository should throw no errors
   Scenario: An admin can add a user and course instances
     When I log in as "admin"
     And I navigate to "Plugins > Repositories > Manage repositories" in site administration
-    Then I should see "Amazon S3 bucket"
+    Then I should see "Amazon S3 bucket plus"
     And I should see "1 Site-wide common instance(s)"
     And I follow "Preferences" in the user menu
     Then I should see "Repositories"
     And I follow "Manage instances"
-    Then I should see "Amazon S3 bucket"
+    Then I should see "Amazon S3 bucket plus"
     And I should see "Create"
     And I am on "Course 1" course homepage with editing mode on
     And I navigate to "Repositories" in current page administration
-    Then I should see "Amazon S3 bucket"
+    Then I should see "Amazon S3 bucket plus"
     And I should see "Create"
 
   @javascript
@@ -53,10 +51,10 @@ Feature: S3 bucket repository should throw no errors
     And I follow "Preferences" in the user menu
     Then I should see "Repositories"
     And I follow "Manage instances"
-    Then I should not see "Amazon S3 bucket"
+    Then I should not see "Amazon S3 bucket plus"
     And I am on "Course 1" course homepage with editing mode on
     And I navigate to "Repositories" in current page administration
-    Then I should see "Amazon S3 bucket"
+    Then I should see "Amazon S3 bucket plus"
     And I should see "Create"
 
   @javascript
@@ -65,6 +63,6 @@ Feature: S3 bucket repository should throw no errors
     And I follow "Preferences" in the user menu
     Then I should see "Repositories"
     And I follow "Manage instances"
-    Then I should not see "Amazon S3 bucket"
+    Then I should not see "Amazon S3 bucket plus"
     And I am on "Course 1" course homepage
-    And I should not see "Amazon S3 bucket"
+    And I should not see "Amazon S3 bucket plus"
