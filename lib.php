@@ -80,7 +80,7 @@ class repository_s3bucket extends repository {
         $files = [];
         try {
             $results = $s->getPaginator('ListObjects', ['Bucket' => $bucket, 'Prefix' => $basepath . $path, 'Delimiter' => '/']);
-        } catch (S3Exception $e) {
+        } catch (Exception $e) {
             throw new moodle_exception('errorwhilecommunicatingwith', 'repository', '', $this->get_name(), $e->getMessage());
         }
         foreach ($results as $result) {
@@ -114,11 +114,12 @@ class repository_s3bucket extends repository {
      * @param stored_file $storedfile the file that contains the reference
      * @param int $lifetime Number of seconds before the file should expire from caches (null means $CFG->filelifetime)
      * @param int $filter 0 (default)=no filtering, 1=all files, 2=html files only
-     * @param bool $forcedownload If true (default false), forces download of file rather than view in browser/plugin
+     * @param bool $forcedownload If true (default true), forces download of file rather than view in browser/plugin
      * @param array $options additional options affecting the file serving
      */
-    public function send_file($storedfile, $lifetime = 6000, $filter = 0, $forcedownload = true, array $options = null) {
-        $this->send_otherfile($storedfile->get_reference(), "+60 minutes");
+    public function send_file($storedfile, $lifetime = 3600, $filter = 0, $forcedownload = true, array $options = null) {
+        $duration = $lifetime > 0 ? $lifetime / 60 : 60;
+        $this->send_otherfile($storedfile->get_reference(), "+$duration minutes");
     }
 
     /**
@@ -131,7 +132,7 @@ class repository_s3bucket extends repository {
         $s3 = $this->create_s3();
         $cmd = $s3->getCommand('GetObject', ['Bucket' => $this->get_option('bucket_name'),
             'Key' => $this->get_base_path() . $reference, 'ResponseContentDisposition' => 'attachment']);
-        $req = $s3->createPresignedRequest($cmd, "+60 minutes");
+        $req = $s3->createPresignedRequest($cmd, $lifetime);
         header('Location: ' . (string)$req->getUri());
         exit;
     }
@@ -178,7 +179,7 @@ class repository_s3bucket extends repository {
         $bucket = $this->get_option('bucket_name');
         try {
             $s->getObject(['Bucket' => $bucket, 'Key' => $this->get_base_path() . $filepath, 'SaveAs' => $path]);
-        } catch (S3Exception $e) {
+        } catch (Exception $e) {
             throw new moodle_exception('errorwhilecommunicatingwith', 'repository', '', $this->get_name(), $e->getMessage());
         }
         return ['path' => $path, 'url' => $this->get_base_path() . $filepath];
@@ -268,7 +269,7 @@ class repository_s3bucket extends repository {
             $s3 = \Aws\S3\S3Client::factory($arr);
             try {
                 $s3->getCommand('HeadBucket', ['Bucket' => $data['bucket_name']]);
-            } catch (S3Exception $e) {
+            } catch (Exception $e) {
                 $errors[] = get_string('errorwhilecommunicatingwith', 'repository');
             }
         }
@@ -312,7 +313,9 @@ class repository_s3bucket extends repository {
             return 'us-east-1';
         }
         $endpoint = str_replace('.amazonaws.com', '', $endpoint);
-        return str_replace('s3-', '', $endpoint);
+        $endpoint = str_replace('s3-', '', $endpoint);
+        $endpoint = str_replace('s3.', '', $endpoint);
+        return $endpoint;
     }
 }
 

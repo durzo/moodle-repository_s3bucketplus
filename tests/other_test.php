@@ -35,7 +35,7 @@ require_once($CFG->dirroot . '/repository/s3bucket/lib.php');
  * @package    repository_s3bucket
  * @copyright  2017 Renaat Debleu (www.eWallah.net) (based on work by Dongsheng Cai)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @coversDefaultClass repository_s3bucket
+ * @coversDefaultClass \repository_s3bucket
  */
 class repository_s3bucket_other_tests extends \advanced_testcase {
 
@@ -89,7 +89,7 @@ class repository_s3bucket_other_tests extends \advanced_testcase {
         $repo->disabled = false;
         $this->assertEquals('Unknown source', $repo->get_reference_details('filename.txt', 666));
         $this->assertFalse($repo->global_search());
-        $this->assertEquals(5, $repo->supported_returntypes());
+        $this->assertEquals(7, $repo->supported_returntypes());
         $this->SetAdminUser();
         $this->assertEquals(2, $repo->check_capability());
         $this->expectException('Aws\S3\Exception\S3Exception');
@@ -128,13 +128,13 @@ class repository_s3bucket_other_tests extends \advanced_testcase {
         global $USER;
         $context = context_user::instance($USER->id);
         $repo = new \repository_s3bucket($USER->id, $context);
-        $repo->set_option(['endpoint' => 's3.eu-central-1.amazonaws.com', 'secret_key' => 'secret', 'bucket_name' => 'test',
+        $repo->set_option(['endpoint' => 'ap-south-1', 'secret_key' => 'secret', 'bucket_name' => 'test',
                            'access_key' => 'abc']);
         $draft = file_get_unused_draft_itemid();
         $filerecord = ['component' => 'user', 'filearea' => 'draft', 'contextid' => $context->id,
                        'itemid' => $draft, 'filename' => 'filename.txt', 'filepath' => '/'];
         get_file_storage()->create_file_from_string($filerecord, 'test content');
-        $this->expectException('Aws\S3\Exception\S3Exception');
+        $this->expectException('exception');
         $repo->get_file('/filename.txt');
     }
 
