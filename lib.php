@@ -64,8 +64,8 @@ class repository_s3bucketplus extends repository {
         $s = $this->create_s3();
         $basepath = $this->get_base_path();
         $bucket = $this->get_option('bucket_name');
-        $diricon = $OUTPUT->image_url(file_folder_icon(64))->out(false);
-        $fileicon = $OUTPUT->image_url(file_extension_icon('', 64))->out(false);
+        $diricon = $OUTPUT->image_url(file_folder_icon())->out(false);
+        $fileicon = $OUTPUT->image_url(file_extension_icon(''))->out(false);
         $place = [['name' => $this->get_name(), 'path' => '']];
         if ($path != '.' && $path != '') {
             $path = rtrim($path, '/') . '/';
@@ -85,24 +85,28 @@ class repository_s3bucketplus extends repository {
         }
         foreach ($results as $result) {
             // Subdirectories first.
-            foreach ($result['CommonPrefixes'] as $object) {
-                $dirpath = $path . basename($object['Prefix']) . '/';
-                if (!in_array(basename($object['Prefix']), array_column($files, 'title'))) {
-                    $files[] = ['title' => basename($object['Prefix']), 'children' => [], 'thumbnail' => $diricon,
-                                'thumbnail_height' => 64, 'thumbnail_width' => 64, 'path' => $dirpath];
+            if (isset($result['CommonPrefixes'])) {
+                foreach ($result['CommonPrefixes'] as $object) {
+                    $dirpath = $path . basename($object['Prefix']) . '/';
+                    if (!in_array(basename($object['Prefix']), array_column($files, 'title'))) {
+                        $files[] = ['title' => basename($object['Prefix']), 'children' => [], 'thumbnail' => $diricon,
+                                    'thumbnail_height' => 64, 'thumbnail_width' => 64, 'path' => $dirpath];
+                    }
                 }
             }
             // Files in the current directory
-            foreach ($result['Contents'] as $object) {
-                if ($object['Size'] == 0) {
-                    // Folders created by the S3 Console (web) are really just 0 byte files.
-                    // They get discovered in CommonPrefixes above, so skip them here.
-                    continue;
+            if (isset($result['Contents'])) {
+                foreach ($result['Contents'] as $object) {
+                    if ($object['Size'] == 0) {
+                        // Folders created by the S3 Console (web) are really just 0 byte files.
+                        // They get discovered in CommonPrefixes above, so skip them here.
+                        continue;
+                    }
+                    $filepath = $path . basename($object['Key']);
+                    $files[] = ['title' => basename($object['Key']), 'size' => $object['Size'], 'path' => $filepath,
+                                'datemodified' => date_timestamp_get($object['LastModified']), 'thumbnail_height' => 64,
+                                'thumbnail_width' => 64, 'source' => $filepath, 'thumbnail' => $fileicon];
                 }
-                $filepath = $path . basename($object['Key']);
-                $files[] = ['title' => basename($object['Key']), 'size' => $object['Size'], 'path' => $filepath,
-                            'datemodified' => date_timestamp_get($object['LastModified']), 'thumbnail_height' => 64,
-                            'thumbnail_width' => 64, 'source' => $filepath, 'thumbnail' => $fileicon];
             }
         }
         return ['list' => $files, 'path' => $place, 'manage' => false, 'dynload' => true, 'nologin' => true, 'nosearch' => true];
